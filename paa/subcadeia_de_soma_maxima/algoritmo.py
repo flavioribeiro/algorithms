@@ -12,7 +12,7 @@ def subcadeia_de_soma_maxima(cadeia):
       inicio = fim+1
       soma = 0
 
-    if soma > total:
+    elif soma > total:
       total = soma
       inicio_intervalo_soma_maxima = inicio
       fim_intervalo_soma_maxima = fim
