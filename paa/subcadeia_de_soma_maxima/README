@@ -1,0 +1,3 @@
+Algoritmo de subcadeia de soma máxima
+
+Para rodar os testes: py.test -vs testes.py
