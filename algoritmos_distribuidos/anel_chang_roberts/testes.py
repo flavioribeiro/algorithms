@@ -3,9 +3,10 @@
 from algoritmo import Node, NodesFactory
 
 def test_node_precisa_ter_pid_e_link_para_proximo_processo():
-    node1 = Node()
-    assert type(node1.pid) == long
-    assert type(node1.next) == Node
+    node = Node()
+    assert type(node.pid) == long
+    assert type(node.next) == Node
+    assert node.status == "non-participant"
 
 def test_nodes_precisam_ter_pids_unicos():
     pids = []
