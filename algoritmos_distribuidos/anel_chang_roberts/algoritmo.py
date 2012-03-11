@@ -6,17 +6,15 @@ class NodesFactory(object):
     def build_nodes(self, qty):
         first_node = Node()
         previous_node = first_node
-        nodes = [previous_node]
+        previous_node.next = first_node
 
         for i in range(qty-1):
             new_node = Node()
             previous_node.next = new_node
             previous_node = new_node
-            nodes.append(previous_node)
 
         new_node.next = first_node
-
-        return nodes
+        return first_node
 
 class Node(object):
     def __init__(self):

@@ -17,10 +17,12 @@ def test_nodes_precisam_ter_pids_unicos():
 
 def test_links_dos_nodes_devem_criar_um_anel():
     nodes_factory = NodesFactory()
-    nodes = nodes_factory.build_nodes(3)
 
-    assert len(nodes) == 3
-    assert nodes[0].next == nodes[1]
-    assert nodes[1].next == nodes[2]
-    assert nodes[2].next == nodes[0]
+    first_node = nodes_factory.build_nodes(3)
+    second_node = first_node.next
+    third_node = second_node.next
+
+    assert first_node.next == second_node
+    assert second_node.next == third_node
+    assert third_node.next == first_node
 
