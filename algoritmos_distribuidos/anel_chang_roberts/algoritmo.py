@@ -22,18 +22,26 @@ class Node(object):
         self.pid = self._build_pid()
         self.next = self # se apenas um nó for criado, ele é linkado nele mesmo
         self.status = "non-participant"
-        self.elected_uuid = None
+        self.elected_pid = None
 
     def start_election(self):
         self.status = "participant"
         self.next.message("election", self.pid)
 
     def message(self, msg, called_pid):
-        if self.status == "non-participant":
+        if self.status == "non-participant" and msg == "election":
             if called_pid < self.pid:
                 self.next.message(msg, self.pid)
             else:
                 self.next.message(msg, called_pid)
+
+        elif called_pid == self.pid and not self.elected_pid:
+            self.elected_pid = self.pid
+            self.next.message("elected", self.pid)
+
+        elif msg == "elected" and not self.elected_pid:
+            self.elected_pid = called_pid
+            self.next.message("elected", called_pid)
 
         self.status = "participant"
 

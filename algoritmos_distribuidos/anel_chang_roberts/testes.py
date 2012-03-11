@@ -7,7 +7,7 @@ def test_node_precisa_ter_pid_e_link_para_proximo_processo():
     assert type(node.pid) == long
     assert type(node.next) == Node
     assert node.status == "non-participant"
-    assert node.elected_uuid == None
+    assert node.elected_pid == None
 
 def test_nodes_precisam_ter_pids_unicos():
     pids = []
@@ -129,4 +129,29 @@ def test_node_ao_receber_mensagem_de_eleicao_deve_comparar_com_seu_pid_e_se_maio
     first_node.start_election()
 
     assert not called[0]
+
+def test_se_o_id_do_node_chegar_de_volta_na_msg_o_no_esta_eleito():
+    """
+    da wikipedia:
+      If the UID in the incoming election message is the same as the UID of the process, that process starts acting as the leader.
+    """
+    def fake_message(msg, pid):
+        called[0] += 1 # se chamado, ele incrementa 1
+
+    nodes_factory = NodesFactory()
+    first_node = nodes_factory.build_nodes(3)
+    first_node.pid = 100
+
+    second_node = first_node.next
+    second_node.pid = 0
+
+    third_node = second_node.next
+    third_node.pid = 1
+
+    first_node.start_election()
+
+    assert first_node.elected_pid == first_node.pid
+    assert second_node.elected_pid == first_node.pid
+    assert third_node.elected_pid == first_node.pid
+
 
