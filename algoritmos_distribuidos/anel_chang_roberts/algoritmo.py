@@ -24,6 +24,9 @@ class Node(object):
         self.status = "non-participant"
         self.elected_uuid = None
 
+    def start_election(self):
+        self.status = "participant"
+
     def _build_pid(self):
         return uuid.uuid4().int
 

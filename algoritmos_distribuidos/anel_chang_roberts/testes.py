@@ -34,3 +34,11 @@ def test_node_factory_deve_criar_um_no_linkando_ele_mesmo():
 
     assert node.next == node
 
+def test_node_precisa_mudar_status_quando_iniciar_eleicao():
+    nodes_factory = NodesFactory()
+    node = nodes_factory.build_nodes(1)
+
+    assert node.status == "non-participant"
+    node.start_election()
+    assert node.status == "participant"
+
