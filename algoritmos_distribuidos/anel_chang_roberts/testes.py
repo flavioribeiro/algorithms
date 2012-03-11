@@ -106,3 +106,27 @@ def test_node_ao_receber_mensagem_de_eleicao_deve_comparar_com_seu_pid_e_se_maio
 
     first_node.start_election()
 
+def test_node_ao_receber_mensagem_de_eleicao_deve_comparar_com_seu_pid_e_se_maior_e_ja_for_participante_deve_descartar_msg():
+    """
+    da wikipedia:
+      If the UID in the election message is smaller, and the process is already a participant (i.e., the process has already sent out an election message with a UID at least as large as its own UID), the process discards the election message.
+    """
+    called = [0]
+    def fake_message(msg, pid):
+        called[0] += 1 # se chamado, ele incrementa 1
+
+    nodes_factory = NodesFactory()
+    first_node = nodes_factory.build_nodes(3)
+    first_node.pid = 100
+
+    second_node = first_node.next
+    second_node.pid = 200
+    second_node.status = "participant"
+
+    third_node = second_node.next
+    third_node.message = fake_message
+
+    first_node.start_election()
+
+    assert not called[0]
+

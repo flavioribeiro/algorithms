@@ -29,10 +29,11 @@ class Node(object):
         self.next.message("election", self.pid)
 
     def message(self, msg, called_pid):
-        if called_pid < self.pid:
-            self.next.message(msg, self.pid)
-        else:
-            self.next.message(msg, called_pid)
+        if self.status == "non-participant":
+            if called_pid < self.pid:
+                self.next.message(msg, self.pid)
+            else:
+                self.next.message(msg, called_pid)
 
         self.status = "participant"
 
