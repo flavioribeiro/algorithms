@@ -28,3 +28,9 @@ def test_links_dos_nodes_devem_criar_um_anel():
     assert second_node.next == third_node
     assert third_node.next == first_node
 
+def test_node_factory_deve_criar_um_no_linkando_ele_mesmo():
+    nodes_factory = NodesFactory()
+    node = nodes_factory.build_nodes(1)
+
+    assert node.next == node
+

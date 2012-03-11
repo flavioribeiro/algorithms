@@ -4,7 +4,8 @@ import uuid
 
 class NodesFactory(object):
     def build_nodes(self, qty):
-        first_node = Node()
+        new_node = Node()
+        first_node = new_node
         previous_node = first_node
         previous_node.next = first_node
 
