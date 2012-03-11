@@ -7,6 +7,7 @@ def test_node_precisa_ter_pid_e_link_para_proximo_processo():
     assert type(node.pid) == long
     assert type(node.next) == Node
     assert node.status == "non-participant"
+    assert node.elected_uuid == None
 
 def test_nodes_precisam_ter_pids_unicos():
     pids = []

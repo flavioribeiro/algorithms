@@ -21,6 +21,7 @@ class Node(object):
         self.pid = self._build_pid()
         self.next = self # se apenas um nó for criado, ele é linkado nele mesmo
         self.status = "non-participant"
+        self.elected_uuid = None
 
     def _build_pid(self):
         return uuid.uuid4().int
