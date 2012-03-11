@@ -26,6 +26,10 @@ class Node(object):
 
     def start_election(self):
         self.status = "participant"
+        self.next.message("election", self.pid)
+
+    def message(self, msg, called_pid):
+        pass
 
     def _build_pid(self):
         return uuid.uuid4().int

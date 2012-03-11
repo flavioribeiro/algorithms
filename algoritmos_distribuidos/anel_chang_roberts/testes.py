@@ -42,3 +42,14 @@ def test_node_precisa_mudar_status_quando_iniciar_eleicao():
     node.start_election()
     assert node.status == "participant"
 
+def test_node_precisa_enviar_mensagem_de_eleicao_com_seu_pid():
+    nodes_factory = NodesFactory()
+    first_node = nodes_factory.build_nodes(3)
+
+    class FakeNode(Node):
+        def message(self, msg, called_pid):
+            assert called_pid == first_node.pid
+            assert msg == "election"
+
+    first_node.next = FakeNode()
+    first_node.start_election()
