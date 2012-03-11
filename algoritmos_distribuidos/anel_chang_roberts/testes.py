@@ -85,3 +85,24 @@ def test_node_ao_receber_mensagem_de_eleicao_deve_comparar_com_seu_pid_e_repassa
 
     first_node.start_election()
 
+def test_node_ao_receber_mensagem_de_eleicao_deve_comparar_com_seu_pid_e_se_maior_repassar_msg_com_seu_proprio_pid_se_nao_for_participante_ainda():
+    """
+    da wikipedia:
+        If the UID in the election message is smaller, and the process is not yet a participant, the process replaces the UID in the message with its own UID, sends the updated election message in a clockwise direction.
+    """
+    def fake_message(msg, pid):
+        assert msg == "election"
+        assert pid == 200
+
+    nodes_factory = NodesFactory()
+    first_node = nodes_factory.build_nodes(3)
+    first_node.pid = 100
+
+    second_node = first_node.next
+    second_node.pid = 200
+
+    third_node = second_node.next
+    third_node.message = fake_message
+
+    first_node.start_election()
+
