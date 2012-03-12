@@ -29,21 +29,21 @@ class Node(object):
         self.next.message("election", self.pid)
 
     def message(self, msg, called_pid):
-        if self.status == "non-participant" and msg == "election":
-            if called_pid < self.pid:
-                self.next.message(msg, self.pid)
-            else:
-                self.next.message(msg, called_pid)
+        if msg == "election":
+            if self.status == "non-participant":
+                self.next.message(msg, max(self.pid, called_pid))
 
-        elif called_pid == self.pid and not self.elected_pid:
-            self.elected_pid = self.pid
-            self.next.message("elected", self.pid)
+            elif called_pid == self.pid and not self.elected_pid:
+                self._elected(self.pid)
 
         elif msg == "elected" and not self.elected_pid:
-            self.elected_pid = called_pid
-            self.next.message("elected", called_pid)
+            self._elected(called_pid)
 
         self.status = "participant"
+
+    def _elected(self, pid):
+        self.elected_pid = pid
+        self.next.message("elected", self.elected_pid)
 
     def _build_pid(self):
         return uuid.uuid4().int
