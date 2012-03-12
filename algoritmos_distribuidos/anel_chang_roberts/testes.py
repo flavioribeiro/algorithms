@@ -34,14 +34,14 @@ def test_node_factory_deve_criar_um_no_linkando_ele_mesmo():
 
     assert node.next == node
 
-#def test_node_precisa_mudar_status_quando_iniciar_eleicao():
-#    nodes_factory = NodesFactory()
-#    node = nodes_factory.build_nodes(1)
-#
-#    assert node.status == "non-participant"
-#    node.start_election()
-#    assert node.status == "participant"
-#
+def test_node_precisa_mudar_status_quando_iniciar_eleicao():
+    nodes_factory = NodesFactory()
+    node = nodes_factory.build_nodes(1)
+
+    assert node.status == "non-participant"
+    node.start_election()
+    assert node.status == "participant"
+
 def test_node_precisa_enviar_mensagem_de_eleicao_com_seu_pid():
     nodes_factory = NodesFactory()
     first_node = nodes_factory.build_nodes(3)
@@ -54,16 +54,16 @@ def test_node_precisa_enviar_mensagem_de_eleicao_com_seu_pid():
     first_node.next = FakeNode()
     first_node.start_election()
 
-#def test_sempre_que_um_node_receber_uma_mensagem_deve_trocar_status_para_participant():
-#    nodes_factory = NodesFactory()
-#    first_node = nodes_factory.build_nodes(3)
-#    first_node.start_election()
-#
-#    second_node = first_node.next
-#    third_node = second_node.next
-#
-#    assert first_node.status == second_node.status == third_node.status == "participant"
-#
+def test_sempre_que_um_node_receber_uma_mensagem_deve_trocar_status_para_participant():
+    nodes_factory = NodesFactory()
+    first_node = nodes_factory.build_nodes(3)
+    first_node.start_election()
+
+    second_node = first_node.next
+    third_node = second_node.next
+
+    assert first_node.status == second_node.status == third_node.status == "participant"
+
 def test_node_ao_receber_mensagem_de_eleicao_deve_comparar_com_seu_pid_e_repassar_pid_se_menor():
     """
     da wikipedia:
