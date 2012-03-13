@@ -1,6 +1,6 @@
 Chang and Roberts Algorithm
 ===========================
 
-Para executar os testes: py.test -vs testes.py
+Para executar os testes: py.test -qs testes.py
 
 http://en.wikipedia.org/wiki/Chang_and_Roberts_algorithm

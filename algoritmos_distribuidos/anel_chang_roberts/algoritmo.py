@@ -1,6 +1,9 @@
 #encoding: utf-8
 
 import uuid
+from log import Logger
+
+logger = Logger()
 
 class NodesFactory(object):
     def build_nodes(self, qty):
@@ -23,12 +26,15 @@ class Node(object):
         self.next = self # se apenas um nó for criado, ele é linkado nele mesmo
         self.status = "non-participant"
         self.elected_pid = None
+        logger.info(self.pid, "initialized")
 
     def start_election(self):
         self.status = "participant"
+        logger.info(self.pid, "starting election")
         self.next.message("election", self.pid)
 
     def message(self, msg, called_pid):
+        logger.info(self.pid, "got a message -> %s" % msg)
         if msg == "election":
             self._verify_election(called_pid)
 
@@ -41,6 +47,7 @@ class Node(object):
             self.status = "participant"
 
         elif called_pid == self.pid:
+            logger.info(self.pid, "Yeah, i've won the election! :-)")
             self._elected(self.pid)
 
     def _elected(self, pid):
