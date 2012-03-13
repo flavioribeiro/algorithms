@@ -34,25 +34,25 @@ class Node(object):
         logger.info(self.pid, "starting election")
         self.next.message("election", self.pid)
 
-    def message(self, msg, called_pid):
-        logger.info(self.pid, "got a message -> %s" % msg)
+    def message(self, msg, received_pid):
+        logger.info(self.pid, "got a message -> %s (received pid: %s)" % (msg, received_pid))
         if msg == "election":
-            self._verify_election(called_pid)
+            self._verify_election(received_pid)
 
         elif msg == "elected" and not self.elected_pid:
-            self._elected(called_pid)
+            self._elected(received_pid)
 
-    def _verify_election(self, called_pid):
+    def _verify_election(self, received_pid):
         if self.status == "non-participant":
             self._change_status("participant")
-            self.next.message("election", max(self.pid, called_pid))
+            self.next.message("election", max(self.pid, received_pid))
 
-        elif called_pid == self.pid:
-            logger.info(self.pid, "Yeah, i've won the election! :-)")
+        elif received_pid == self.pid:
+            logger.info(self.pid, "*** Yeah, i've won the election! :-) ***")
             self._elected(self.pid)
 
-        elif self.status == "participant" and called_pid > self.pid:
-            self.next.message("election", called_pid)
+        elif self.status == "participant" and received_pid > self.pid:
+            self.next.message("election", received_pid)
 
     def _elected(self, pid):
         self.elected_pid = pid

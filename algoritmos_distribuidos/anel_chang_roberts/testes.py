@@ -12,7 +12,7 @@ def test_node_precisa_ter_pid_e_link_para_proximo_processo():
 
 def test_nodes_precisam_ter_pids_unicos():
     pids = []
-    for i in range(1000):
+    for i in range(100):
         node = Node()
         pids.append(node.pid)
 
