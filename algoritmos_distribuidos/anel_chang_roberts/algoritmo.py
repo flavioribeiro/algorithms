@@ -30,16 +30,18 @@ class Node(object):
 
     def message(self, msg, called_pid):
         if msg == "election":
-            if self.status == "non-participant":
-                self.next.message(msg, max(self.pid, called_pid))
-
-            elif called_pid == self.pid and not self.elected_pid:
-                self._elected(self.pid)
+            self._verify_election(called_pid)
 
         elif msg == "elected" and not self.elected_pid:
             self._elected(called_pid)
 
-        self.status = "participant"
+    def _verify_election(self, called_pid):
+        if self.status == "non-participant":
+            self.next.message("election", max(self.pid, called_pid))
+            self.status = "participant"
+
+        elif called_pid == self.pid:
+            self._elected(self.pid)
 
     def _elected(self, pid):
         self.elected_pid = pid
