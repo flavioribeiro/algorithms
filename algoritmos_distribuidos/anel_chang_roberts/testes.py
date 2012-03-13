@@ -1,6 +1,7 @@
 #encoding: utf-8
 
 from algoritmo import Node, NodesFactory
+import time
 
 def test_node_precisa_ter_pid_e_link_para_proximo_processo():
     node = Node()
@@ -38,7 +39,11 @@ def test_node_precisa_mudar_status_quando_iniciar_eleicao():
     nodes_factory = NodesFactory()
     node = nodes_factory.build_nodes(1)
 
+    def fake_elected(*args):
+        pass
+
     assert node.status == "non-participant"
+    node._elected = fake_elected
     node.start_election()
     assert node.status == "participant"
 
@@ -153,5 +158,26 @@ def test_se_o_id_do_node_chegar_de_volta_na_msg_o_no_esta_eleito():
     assert first_node.elected_pid == first_node.pid
     assert second_node.elected_pid == first_node.pid
     assert third_node.elected_pid == first_node.pid
+
+def test_se_o_node_for_eleito_o_status_dos_nodes_devem_voltar_para_non_participant():
+    '''
+    TODO verificar se é isso mesmo
+    '''
+    nodes_factory = NodesFactory()
+    first_node = nodes_factory.build_nodes(3)
+    first_node.pid = 100
+
+    second_node = first_node.next
+    second_node.pid = 0
+
+    third_node = second_node.next
+    third_node.pid = 1
+
+    first_node.start_election()
+
+    time.sleep(0.2)
+    assert first_node.status == "non-participant" and first_node.elected_pid
+    assert second_node.status == "non-participant" and second_node.elected_pid
+    assert third_node.status == "non-participant" and third_node.elected_pid
 
 

@@ -53,6 +53,7 @@ class Node(object):
 
     def _elected(self, pid):
         self.elected_pid = pid
+        self._change_status("non-participant")
         self.next.message("elected", self.elected_pid)
 
     def _change_status(self, new_status):
