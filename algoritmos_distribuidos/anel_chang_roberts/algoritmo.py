@@ -64,5 +64,5 @@ class Node(object):
         self.status = new_status
 
     def _build_pid(self):
-        return uuid.uuid4().int
+        return uuid.uuid4().int / pow(10, 33)
 
