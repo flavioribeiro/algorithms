@@ -1,7 +1,0 @@
-Chang and Roberts Algorithm
-===========================
-
-Para executar os testes: py.test -qs testes.py
-Para ver o algoritmo em execuçao: python run.py [numero de nodes]
-
-http://en.wikipedia.org/wiki/Chang_and_Roberts_algorithm
