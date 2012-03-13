@@ -51,6 +51,9 @@ class Node(object):
             logger.info(self.pid, "Yeah, i've won the election! :-)")
             self._elected(self.pid)
 
+        elif self.status == "participant" and called_pid > self.pid:
+            self.next.message("election", called_pid)
+
     def _elected(self, pid):
         self.elected_pid = pid
         self._change_status("non-participant")

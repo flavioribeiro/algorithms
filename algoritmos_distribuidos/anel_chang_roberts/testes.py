@@ -60,13 +60,17 @@ def test_node_precisa_enviar_mensagem_de_eleicao_com_seu_pid():
     first_node.start_election()
 
 def test_sempre_que_um_node_receber_uma_mensagem_deve_trocar_status_para_participant():
+    def fake_elected(*args):
+        pass
+
     nodes_factory = NodesFactory()
     first_node = nodes_factory.build_nodes(3)
-    first_node.start_election()
-
     second_node = first_node.next
     third_node = second_node.next
 
+    first_node._elected = second_node._elected = third_node._elected = fake_elected
+
+    first_node.start_election()
     assert first_node.status == second_node.status == third_node.status == "participant"
 
 def test_node_ao_receber_mensagem_de_eleicao_deve_comparar_com_seu_pid_e_repassar_pid_se_menor():
@@ -140,9 +144,6 @@ def test_se_o_id_do_node_chegar_de_volta_na_msg_o_no_esta_eleito():
     da wikipedia:
       If the UID in the incoming election message is the same as the UID of the process, that process starts acting as the leader.
     """
-    def fake_message(msg, pid):
-        called[0] += 1 # se chamado, ele incrementa 1
-
     nodes_factory = NodesFactory()
     first_node = nodes_factory.build_nodes(3)
     first_node.pid = 100
@@ -161,7 +162,7 @@ def test_se_o_id_do_node_chegar_de_volta_na_msg_o_no_esta_eleito():
 
 def test_se_o_node_for_eleito_o_status_dos_nodes_devem_voltar_para_non_participant():
     '''
-    TODO verificar se é isso mesmo
+    TODO verificar se esse é o comportamento desejado do algoritmo
     '''
     nodes_factory = NodesFactory()
     first_node = nodes_factory.build_nodes(3)
@@ -179,5 +180,22 @@ def test_se_o_node_for_eleito_o_status_dos_nodes_devem_voltar_para_non_participa
     assert first_node.status == "non-participant" and first_node.elected_pid
     assert second_node.status == "non-participant" and second_node.elected_pid
     assert third_node.status == "non-participant" and third_node.elected_pid
+
+def test_se_o_segundo_node_tiver_maior_pid_ele_deve_ser_eleito():
+    nodes_factory = NodesFactory()
+    first_node = nodes_factory.build_nodes(3)
+    first_node.pid = 100
+
+    second_node = first_node.next
+    second_node.pid = 200
+
+    third_node = second_node.next
+    third_node.pid = 1
+
+    first_node.start_election()
+
+    assert first_node.elected_pid == second_node.pid
+    assert second_node.elected_pid == second_node.pid
+    assert third_node.elected_pid == second_node.pid
 
 
