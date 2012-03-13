@@ -1,8 +1,9 @@
 from termcolor import colored
-from random import choice
 
 class Logger(object):
+
     def __init__(self):
+        self.ids_and_colors = {}
         self.colors = ['red', 'green', 'yellow', 'blue', 'magenta', 'cyan', 'white']
 
     def info(self, id, message):
@@ -12,6 +13,10 @@ class Logger(object):
             attrs = ['bold', 'dark']
 
         print colored("[%s] %s" % (id, message), color, attrs=attrs)
+
     def _get_color(self, id):
-        return self.colors[ id % 7 ]
+        if id not in self.ids_and_colors:
+            self.ids_and_colors[id] = self.colors.pop()
+
+        return self.ids_and_colors[id]
 
