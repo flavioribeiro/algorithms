@@ -1,0 +1,3 @@
+Algoritmo de Merge Sort
+
+Para rodar os testes: make && ./tests
