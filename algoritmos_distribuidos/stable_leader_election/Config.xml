@@ -23,10 +23,10 @@
 		<asynchronousMode value="false" />
 
 		<!--If set to true, the runtime obtains for each node a new position from the mobility model at the beginning of each round. This flag needs to be turned on if the chosen  mobility model of any node may change the node's position. Set this flag to FALSE for static graphs whose nodes do never change their position to increase performance.-->
-		<mobility value="true" />
+		<mobility value="false" />
 
 		<!--If set to true, the chosen interference model is called at the end of every round to test for interferring packets. To increase performance, set this flag to FALSE if you do not consider interference.-->
-		<interference value="true" />
+		<interference value="false" />
 
 		<!--Set this flag to true if interference only decreases if  less messages are being sent and increases if more messages are being sent. This flag enables considerable optimizations. -->
 		<interferenceIsAdditive value="true" />
@@ -71,7 +71,7 @@
 		<logConfiguration value="true" />
 
 		<!--If set to true, the log files are flushed every time a new log is added.-->
-		<eagerFlush value="false" />
+		<eagerFlush value="true" />
 
 		<!--***********************************************************************-->
 		<!--  GUI                                                                  -->
@@ -80,7 +80,7 @@
 		<extendedControl value="true" />
 
 		<!--If true, the graph edges are drawn as directed arrows,  otherwise simple lines.-->
-		<drawArrows value="false" />
+		<drawArrows value="true" />
 
 		<!--Fraction of the old and new zoom values for a zoom step.-->
 		<zoomStep value="1.2" />
