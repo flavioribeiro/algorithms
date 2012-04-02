@@ -51,20 +51,20 @@ public class SimpleNode extends Node {
 		if(!isSending) { // don't even look at incoming messages
 			return;
 		}
-        Message msg = inbox.next();
+        //Message msg = inbox.next();
 
         log.logln("rsrsrs\n");
-//		if(inbox.hasNext()) {
-//			Message msg = inbox.next();
-//			if(msg instanceof S1Message) {
-//				S1Message m = (S1Message) msg;
-//				if(next != null) {
-//					m.data += increment;
-//					DelayTimer dt = new DelayTimer(m, this, m.data);
-//					dt.startRelative(m.data, this);
-//				}
-//			}
-//		}
+		if(inbox.hasNext()) {
+			Message msg = inbox.next();
+			if(msg instanceof SimpleMessage) {
+				SimpleMessage m = (SimpleMessage) msg;
+				if(next != null) {
+					m.data += increment;
+					DelayTimer dt = new DelayTimer(m, this, m.data);
+					dt.startRelative(m.data, this);
+				}
+			}
+		}
 	}
 
 	@Override

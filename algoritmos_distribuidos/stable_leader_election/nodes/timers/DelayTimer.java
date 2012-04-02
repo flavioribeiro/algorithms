@@ -34,9 +34,9 @@
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-package projects.sample1.nodes.timers;
+package projects.stable_leader_election.nodes.timers;
 
-import projects.sample1.nodes.nodeImplementations.S1Node;
+import projects.stable_leader_election.nodes.nodeImplementations.SimpleNode;
 import sinalgo.nodes.messages.Message;
 import sinalgo.nodes.timers.Timer;
 import sinalgo.tools.logging.Logging;
@@ -51,8 +51,8 @@ import sinalgo.tools.logging.Logging;
  */
 public class DelayTimer extends Timer {
 	Message msg;
-	S1Node sender;
-	Logging log = Logging.getLogger("s1_log");
+	SimpleNode sender;
+	Logging log = Logging.getLogger("stable_election_log");
 	int interval;
 	
 	/**
@@ -66,7 +66,7 @@ public class DelayTimer extends Timer {
 	 * @param sender The sender of the message.
 	 * @param interval Interval between subsequent firings of the timer.
 	 */
-	public DelayTimer(Message msg, S1Node sender, int interval) {
+	public DelayTimer(Message msg, SimpleNode sender, int interval) {
 		this.msg = msg;
 		this.sender = sender;
 		this.interval = interval;
@@ -74,12 +74,12 @@ public class DelayTimer extends Timer {
 	
 	@Override
 	public void fire() {
-		if(!S1Node.isSending) {
+		if(!SimpleNode.isSending) {
 			return;
 		}
 		if(sender.next != null) {
 			node.send(msg, sender.next);
-			((S1Node) node).msgSentInThisRound++;
+			((SimpleNode) node).msgSentInThisRound++;
 		}
 		this.startRelative(interval, node); // recursive restart of the timer
 	}

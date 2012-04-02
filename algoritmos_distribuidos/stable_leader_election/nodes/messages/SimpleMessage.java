@@ -23,7 +23,7 @@ public class SimpleMessage extends Message {
 
 	@Override
 	public Message clone() {
-		return new S1Message(data);
+		return new SimpleMessage(data);
 	}
 
 }

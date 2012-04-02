@@ -131,7 +131,7 @@
 		<DefaultReliabilityModel value="ReliableDelivery" />
 
 		<!--Default node implementation used when none is specified-->
-		<DefaultNodeImplementation value="DummyNode" />
+		<DefaultNodeImplementation value="stable_leader_election:SimpleNode" />
 
 		<!--***********************************************************************-->
 		<!--  Node storage, position transformation                                -->
