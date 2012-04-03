@@ -7,23 +7,16 @@ import sinalgo.nodes.messages.Message;
  * as payload.
  */
 public class SimpleMessage extends Message {
-	/**
-	 * The payload of the S1Message.
-	 */
-	public int data;
+
+	public String data;
 	
-	/**
-	 * Constructs a new Message of type S1Message.
-	 *
-	 * @param data
-	 */
-	public SimpleMessage(int data) {
+	public SimpleMessage(String data) {
 		this.data = data;
 	}
 
 	@Override
 	public Message clone() {
-		return new SimpleMessage(data);
+		return this;
 	}
 
 }
