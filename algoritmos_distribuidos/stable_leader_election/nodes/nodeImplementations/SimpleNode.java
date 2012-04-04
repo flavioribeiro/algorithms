@@ -52,12 +52,13 @@ public class SimpleNode extends Node {
 
 
 	private void StartRound(int currentElectionRound) {
-		if(ID != currentElectionRound % 5) {
-			MessageTimer msgTimer = new MessageTimer(new SimpleMessage("Start," + Integer.toString(currentElectionRound)), Tools.getNodeByID(currentElectionRound % 5));
+		int totalNodes = Tools.getNodeList().size();
+		if(ID != currentElectionRound % totalNodes) {
+			MessageTimer msgTimer = new MessageTimer(new SimpleMessage("Start," + Integer.toString(currentElectionRound)), Tools.getNodeByID(currentElectionRound % totalNodes));
 			msgTimer.startRelative(1, this);
 		}
 		currentRound = currentElectionRound;
-		leader = currentElectionRound % 5;
+		leader = currentElectionRound % totalNodes;
 	}
 
 	@Override
