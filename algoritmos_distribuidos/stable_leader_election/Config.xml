@@ -62,10 +62,10 @@
 		<logFileName value="logfile.txt" />
 
 		<!--Redirects the default log file to the console. No logfile will be created if set to true.-->
-		<outputToConsole value="true" />
+		<outputToConsole value="false" />
 
 		<!--Indicates whether all log-files of the current simulation  are stored in a new directory. The name of the new directory is given by the string-representation of the date when the simulation starts.-->
-		<logToTimeDirectory value="true" />
+		<logToTimeDirectory value="false" />
 
 		<!--If set to true, the system configuration is written to the default log file after the application has been started.-->
 		<logConfiguration value="true" />

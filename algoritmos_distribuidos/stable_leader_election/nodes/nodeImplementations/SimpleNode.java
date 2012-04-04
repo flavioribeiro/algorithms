@@ -4,7 +4,7 @@ package projects.stable_leader_election.nodes.nodeImplementations;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import projects.defaultProject.nodes.timers.MessageTimer;
+import projects.stable_leader_election.nodes.timers.MyMessageTimer;
 import projects.stable_leader_election.nodes.messages.SimpleMessage;
 import projects.stable_leader_election.nodes.timers.DelayTimer;
 import sinalgo.configuration.Configuration;
@@ -19,11 +19,9 @@ import sinalgo.runtime.Main;
 import sinalgo.tools.Tools;
 import sinalgo.tools.logging.Logging;
 
-/**
- * The Node of the sample project.
- */
 public class SimpleNode extends Node {
 
+    public SimpleNode next;
 	int currentRound = 0;
 	int leader = 0;
 
@@ -34,7 +32,6 @@ public class SimpleNode extends Node {
 
 	@Override
 	public void handleMessages(Inbox inbox) {
-		log.logln(Integer.toString(inbox.size()));
 		if(inbox.hasNext()) {
 			log.logln("teste2");
 			Message msg = inbox.next();
@@ -46,25 +43,50 @@ public class SimpleNode extends Node {
 	}
 
 	@Override
+	public void neighborhoodChange() {
+		next = null;
+		for(Edge e : this.outgoingConnections) {
+			if(next == null) {
+				next = (SimpleNode) e.endNode;
+			} else {
+				if(e.endNode.ID < next.ID) {
+					next = (SimpleNode) e.endNode;
+				}
+			}
+		}
+	}
+	
+	@Override
 	public void init() {
 		StartRound(0);
+//        MessageTimer msgTimer = new MessageTimer(new SimpleMessage("Rolou!"), Tools.getNodeByID(1));
+   			MyMessageTimer msgTimer = new MyMessageTimer(new SimpleMessage("StartRound"));//SimpleMessage("Start," + Integer.toString(currentElectionRound)),
+                                                           //                 Tools.getNodeByID(0));
+			msgTimer.startRelative(1, this);
+
+     log.logln("Fui inicializado");
 	}
 
+	@NodePopupMethod(menuText="Start")
+	public void start() {
+		MyMessageTimer msgTimer = new MyMessageTimer(new SimpleMessage("risos"));
+		msgTimer.startRelative(1, this);
+		log.logln("Start Routing from node " + this.ID + "\n");
+	}
+	
 
 	private void StartRound(int currentElectionRound) {
 		int totalNodes = Tools.getNodeList().size();
-		if(ID != currentElectionRound % totalNodes) {
-			MessageTimer msgTimer = new MessageTimer(new SimpleMessage("Start," + Integer.toString(currentElectionRound)), Tools.getNodeByID(currentElectionRound % totalNodes));
+        log.logln("Total de nós: " + Integer.toString(totalNodes));
+//		if(ID != currentElectionRound % totalNodes) {
+			MyMessageTimer msgTimer = new MyMessageTimer(new SimpleMessage("StartRound"));//SimpleMessage("Start," + Integer.toString(currentElectionRound)),
+                                                           //                 Tools.getNodeByID(0));
 			msgTimer.startRelative(1, this);
-		}
-		currentRound = currentElectionRound;
-		leader = currentElectionRound % totalNodes;
+//		}
+//		currentRound = currentElectionRound;
+//		leader = currentElectionRound % totalNodes;
 	}
 
-	@Override
-	public void neighborhoodChange() {
-	
-	}
 	
 	@Override
 	public void postStep() {
