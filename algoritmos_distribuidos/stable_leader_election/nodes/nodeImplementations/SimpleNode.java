@@ -4,7 +4,6 @@ package projects.stable_leader_election.nodes.nodeImplementations;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import projects.stable_leader_election.nodes.timers.MyMessageTimer;
 import projects.stable_leader_election.nodes.messages.SimpleMessage;
 import projects.stable_leader_election.nodes.timers.DelayTimer;
 import sinalgo.configuration.Configuration;
@@ -37,60 +36,37 @@ public class SimpleNode extends Node {
 			Message msg = inbox.next();
 			if(msg instanceof SimpleMessage) {
 				SimpleMessage m = (SimpleMessage) msg;
-				log.logln(m.data);
+				log.logln("INBOX: " + m.data);
 			}
 		}
 	}
 
 	@Override
 	public void neighborhoodChange() {
-		next = null;
-		for(Edge e : this.outgoingConnections) {
-			if(next == null) {
-				next = (SimpleNode) e.endNode;
-			} else {
-				if(e.endNode.ID < next.ID) {
-					next = (SimpleNode) e.endNode;
-				}
-			}
-		}
 	}
 	
 	@Override
 	public void init() {
-		StartRound(0);
-//        MessageTimer msgTimer = new MessageTimer(new SimpleMessage("Rolou!"), Tools.getNodeByID(1));
-   			MyMessageTimer msgTimer = new MyMessageTimer(new SimpleMessage("StartRound"));//SimpleMessage("Start," + Integer.toString(currentElectionRound)),
-                                                           //                 Tools.getNodeByID(0));
-			msgTimer.startRelative(1, this);
-
-     log.logln("Fui inicializado");
+     log.logln("Fui inicializado ->>>> " + Double.toString(this.getRadioIntensity()));
 	}
 
 	@NodePopupMethod(menuText="Start")
 	public void start() {
-		MyMessageTimer msgTimer = new MyMessageTimer(new SimpleMessage("risos"));
-		msgTimer.startRelative(1, this);
 		log.logln("Start Routing from node " + this.ID + "\n");
+		StartRound(0);
 	}
-	
 
 	private void StartRound(int currentElectionRound) {
 		int totalNodes = Tools.getNodeList().size();
         log.logln("Total de nós: " + Integer.toString(totalNodes));
-//		if(ID != currentElectionRound % totalNodes) {
-			MyMessageTimer msgTimer = new MyMessageTimer(new SimpleMessage("StartRound"));//SimpleMessage("Start," + Integer.toString(currentElectionRound)),
-                                                           //                 Tools.getNodeByID(0));
-			msgTimer.startRelative(1, this);
-//		}
-//		currentRound = currentElectionRound;
-//		leader = currentElectionRound % totalNodes;
+        log.logln("Lá vou eu tentar enviar pro outro nó");
+        SimpleMessage msg_teste = new SimpleMessage("rsrs");
+        this.sendDirect(msg_teste, Tools.getNodeByID(Tools.getNodeList().size() -1));
 	}
 
-	
 	@Override
 	public void postStep() {
-	
+        StartRound(0);	
 	}
 	
 	@Override
