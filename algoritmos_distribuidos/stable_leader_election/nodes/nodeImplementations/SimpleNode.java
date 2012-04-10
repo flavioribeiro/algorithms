@@ -59,9 +59,13 @@ public class SimpleNode extends Node {
 	private void StartRound(int currentElectionRound) {
 		int totalNodes = Tools.getNodeList().size();
         log.logln("Total de nós: " + Integer.toString(totalNodes));
-        log.logln("Lá vou eu tentar enviar pro outro nó");
-        SimpleMessage msg_teste = new SimpleMessage("rsrs");
-        this.sendDirect(msg_teste, Tools.getNodeByID(Tools.getNodeList().size() -1));
+		if(ID != (currentElectionRound % totalNodes + 1)) {
+			SimpleMessage msg_teste = new SimpleMessage("Start," + Integer.toString(currentElectionRound));
+	        this.sendDirect(msg_teste, Tools.getNodeByID( (currentElectionRound % totalNodes + 1) ));
+		}
+		currentRound = currentElectionRound;
+		leader = (currentElectionRound % totalNodes) + 1;
+		log.logln("Leader is: " + Integer.toString(leader));
 	}
 
 	@Override
