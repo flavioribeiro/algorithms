@@ -32,15 +32,14 @@ public class SimpleNode extends Node {
 			Message msg = inbox.next();
 
             SimpleMessage m = (SimpleMessage) msg;
-            log.logln("[" + ID + "] INBOX: " + m.data);
             if (m.data.startsWith("START") && m.data.endsWith(Integer.toString(ID))) {
-                log.logln("[" + ID + "] Hey, it seems i'm the leader now. Broadcasting OK");
+                privlog("Hey, it seems i'm the leader now. Broadcasting OK");
                 SimpleMessage ok_msg = new SimpleMessage("OK," + Integer.toString(ID));
                 this.broadcast(ok_msg);
                 stepsWithoutOK = 0;
 
             } else if (m.data.startsWith("OK") && m.data.endsWith(Integer.toString(getLeader()))) {
-                log.logln("[" + ID + "] Received OK from the leader");
+                privlog("Received OK from the leader");
                 stepsWithoutOK = 0;
             }
 
@@ -56,7 +55,7 @@ public class SimpleNode extends Node {
 	public void init() {
         setLeader(0);
         setCurrentRound(0);
-        log.logln("[" + ID + "] Initialized (Current Round: " + Integer.toString(currentRound) + " / Current Leader: " + Integer.toString(leader));
+        privlog("Initialized (Current Round: " + Integer.toString(currentRound) + " / Current Leader: " + Integer.toString(leader));
 	}
 
 	@NodePopupMethod(menuText="Start")
@@ -65,7 +64,7 @@ public class SimpleNode extends Node {
 
 	@Override
 	public void postStep() {
-        log.logln("[" + ID + "] Current Round: " + Integer.toString(currentRound) + " / Current Leader: " + Integer.toString(leader));
+        privlog("Current Round: " + Integer.toString(currentRound) + " / Current Leader: " + Integer.toString(leader));
 	}
 
 	@Override
@@ -74,7 +73,7 @@ public class SimpleNode extends Node {
         stepsWithoutOK++;
 
         if (stepsWithoutOK > (2 * interval + 1)) {
-            log.logln("[" + ID + "] Timeout expired without OK. It seems we haven't leader.");
+            privlog("Timeout expired without OK. It seems we haven't leader.");
             int newLeader = currentRound % Tools.getNodeList().size() + 1;
             setLeader(newLeader);
             setCurrentRound(getCurrentRound() + 1);
@@ -93,8 +92,12 @@ public class SimpleNode extends Node {
 	public void checkRequirements() throws WrongConfigurationException {
 	}
 
+    public void privlog(String message) {
+        log.logln("[" + ID + "] " + message);
+    }
+
     private void setLeader(int newLeader) {
-        log.logln("[" + ID + "] Setting a new leader: " + Integer.toString(newLeader));
+        privlog("Setting a new leader: " + Integer.toString(newLeader));
         this.leader = newLeader;
     }
 
