@@ -26,17 +26,13 @@ public class SimpleNode extends Node {
 
 	Logging log = Logging.getLogger("stable_election_log");
 
-	// a flag to prevent all nodes from sending messages
-	public static boolean isSending = true;
-
 	@Override
 	public void handleMessages(Inbox inbox) {
 		if(inbox.hasNext()) {
-			log.logln("teste2");
 			Message msg = inbox.next();
 			if(msg instanceof SimpleMessage) {
 				SimpleMessage m = (SimpleMessage) msg;
-				log.logln("INBOX: " + m.data);
+				log.logln("[" + ID + "] INBOX: " + m.data);
 			}
 		}
 	}
@@ -44,21 +40,19 @@ public class SimpleNode extends Node {
 	@Override
 	public void neighborhoodChange() {
 	}
-	
-	@Override
+
+    @Override
 	public void init() {
-     log.logln("Fui inicializado ->>>> " + Double.toString(this.getRadioIntensity()));
+        log.logln("[" + ID + "] Initialized");
 	}
 
 	@NodePopupMethod(menuText="Start")
 	public void start() {
-		log.logln("Start Routing from node " + this.ID + "\n");
-		StartRound(0);
 	}
 
 	private void StartRound(int currentElectionRound) {
 		int totalNodes = Tools.getNodeList().size();
-        log.logln("Total de nós: " + Integer.toString(totalNodes));
+
 		if(ID != (currentElectionRound % totalNodes + 1)) {
 			SimpleMessage msg_teste = new SimpleMessage("Start," + Integer.toString(currentElectionRound));
 	        this.sendDirect(msg_teste, Tools.getNodeByID( (currentElectionRound % totalNodes + 1) ));
@@ -70,17 +64,15 @@ public class SimpleNode extends Node {
 
 	@Override
 	public void postStep() {
-        StartRound(0);	
-	}
-	
-	@Override
-	public void preStep() {
-	
+        StartRound(0);
+        log.logln("[" + ID + "] Current Round: " + Integer.toString(currentRound) + " / Current Leader: " + Integer.toString(leader));
 	}
 
+	@Override
+	public void preStep() {
+	}
 
 	@Override
 	public void checkRequirements() throws WrongConfigurationException {
-	
 	}
 }
