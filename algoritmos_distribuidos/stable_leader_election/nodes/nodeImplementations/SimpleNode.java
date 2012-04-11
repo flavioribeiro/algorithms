@@ -31,6 +31,17 @@ public class SimpleNode extends Node {
 
             SimpleMessage m = (SimpleMessage) msg;
             log.logln("[" + ID + "] INBOX: " + m.data);
+            if (m.data.startsWith("START") && m.data.endsWith(Integer.toString(ID))) {
+                log.logln("[" + ID + "] Hey, it seems i'm the leader now. Broadcasting OK");
+                SimpleMessage ok_msg = new SimpleMessage("OK," + Integer.toString(ID));
+                this.broadcast(ok_msg);
+                stepsWithoutOK = 0;
+
+            } else if (m.data.startsWith("OK") && m.data.endsWith(Integer.toString(getLeader()))) {
+                log.logln("[" + ID + "] Received OK from the leader");
+                stepsWithoutOK = 0;
+            }
+
 		}
 	}
 
@@ -61,7 +72,7 @@ public class SimpleNode extends Node {
             setLeader(newLeader);
             setCurrentRound(getCurrentRound() + 1);
 
-            SimpleMessage msg = new SimpleMessage("Start," + Integer.toString(newLeader));
+            SimpleMessage msg = new SimpleMessage("START," + Integer.toString(newLeader));
             this.sendDirect(msg, Tools.getNodeByID(newLeader));
             stepsWithoutOK = 0;
         }
