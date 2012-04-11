@@ -14,6 +14,8 @@ import sinalgo.runtime.Main;
 import sinalgo.tools.Tools;
 import sinalgo.tools.logging.Logging;
 
+import sinalgo.gui.transformation.PositionTransformation;
+
 public class SimpleNode extends Node {
 
     public int currentStep = 0; //rounds at sinalgo will behave as steps here
@@ -43,6 +45,11 @@ public class SimpleNode extends Node {
             }
 
 		}
+	}
+
+	@Override
+	public void draw(Graphics g, PositionTransformation pt, boolean highlight) {
+        super.drawNodeAsDiskWithText(g, pt, highlight, Integer.toString(this.ID), 26, Color.WHITE);
 	}
 
     @Override
