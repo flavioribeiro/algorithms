@@ -77,7 +77,10 @@ public class SimpleNode extends Node {
             setLeader(newLeader);
             setCurrentRound(getCurrentRound() + 1);
             sendStartMessageToLeader();
-       }
+        } else if ((stepsWithoutOK % interval == 0) && (getLeader() == ID)) {
+            privlog("OK, i'm the leader and still alive");
+            broadcastOK();
+        }
 	}
 
 	@Override
