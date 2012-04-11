@@ -22,7 +22,7 @@ public class SimpleNode extends Node {
     public int stepsWithoutOK = 0;
 	private int currentRound;
 	private int leader;
-    private int interval = 2;
+    private int interval = 40;
 
 	Logging log = Logging.getLogger("stable_election_log");
 
