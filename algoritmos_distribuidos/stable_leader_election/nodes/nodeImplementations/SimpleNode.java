@@ -52,8 +52,8 @@ public class SimpleNode extends Node {
 
     @Override
 	public void init() {
-        setLeader(0);
-        setCurrentRound(0);
+        setLeader(1);
+        setCurrentRound(1);
         privlog("Initialized (Current Round: " + Integer.toString(currentRound) + " / Current Leader: " + Integer.toString(leader));
 	}
 
