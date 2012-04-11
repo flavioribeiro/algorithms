@@ -1,17 +1,13 @@
 package projects.stable_leader_election.nodes.nodeImplementations;
 
-
 import java.awt.Color;
 import java.awt.Graphics;
 
+import projects.defaultProject.nodes.timers.MessageTimer;
 import projects.stable_leader_election.nodes.messages.SimpleMessage;
 import projects.stable_leader_election.nodes.timers.DelayTimer;
-import sinalgo.configuration.Configuration;
-import sinalgo.configuration.CorruptConfigurationEntryException;
 import sinalgo.configuration.WrongConfigurationException;
-import sinalgo.gui.transformation.PositionTransformation;
 import sinalgo.nodes.Node;
-import sinalgo.nodes.edges.Edge;
 import sinalgo.nodes.messages.Inbox;
 import sinalgo.nodes.messages.Message;
 import sinalgo.runtime.Main;
@@ -20,9 +16,11 @@ import sinalgo.tools.logging.Logging;
 
 public class SimpleNode extends Node {
 
-    public SimpleNode next;
-	int currentRound = 0;
-	int leader = 0;
+    public int currentStep = 0; //rounds at sinalgo will behave as steps here
+    public int stepsWithoutOK = 0;
+	private int currentRound;
+	private int leader;
+    private int interval = 2;
 
 	Logging log = Logging.getLogger("stable_election_log");
 
@@ -30,49 +28,67 @@ public class SimpleNode extends Node {
 	public void handleMessages(Inbox inbox) {
 		if(inbox.hasNext()) {
 			Message msg = inbox.next();
-			if(msg instanceof SimpleMessage) {
-				SimpleMessage m = (SimpleMessage) msg;
-				log.logln("[" + ID + "] INBOX: " + m.data);
-			}
-		}
-	}
 
-	@Override
-	public void neighborhoodChange() {
+            SimpleMessage m = (SimpleMessage) msg;
+            log.logln("[" + ID + "] INBOX: " + m.data);
+		}
 	}
 
     @Override
 	public void init() {
-        log.logln("[" + ID + "] Initialized");
+        setLeader(0);
+        setCurrentRound(0);
+        log.logln("[" + ID + "] Initialized (Current Round: " + Integer.toString(currentRound) + " / Current Leader: " + Integer.toString(leader));
 	}
 
 	@NodePopupMethod(menuText="Start")
 	public void start() {
 	}
 
-	private void StartRound(int currentElectionRound) {
-		int totalNodes = Tools.getNodeList().size();
-
-		if(ID != (currentElectionRound % totalNodes + 1)) {
-			SimpleMessage msg_teste = new SimpleMessage("Start," + Integer.toString(currentElectionRound));
-	        this.sendDirect(msg_teste, Tools.getNodeByID( (currentElectionRound % totalNodes + 1) ));
-		}
-		currentRound = currentElectionRound;
-		leader = (currentElectionRound % totalNodes) + 1;
-		log.logln("Leader is: " + Integer.toString(leader));
-	}
-
 	@Override
 	public void postStep() {
-        StartRound(0);
         log.logln("[" + ID + "] Current Round: " + Integer.toString(currentRound) + " / Current Leader: " + Integer.toString(leader));
 	}
 
 	@Override
 	public void preStep() {
+        currentStep++;
+        stepsWithoutOK++;
+
+        if (stepsWithoutOK > (2 * interval + 1)) {
+            log.logln("[" + ID + "] Timeout expired without OK. It seems we haven't leader.");
+            int newLeader = currentRound % Tools.getNodeList().size() + 1;
+            setLeader(newLeader);
+            setCurrentRound(getCurrentRound() + 1);
+
+            SimpleMessage msg = new SimpleMessage("Start," + Integer.toString(newLeader));
+            this.sendDirect(msg, Tools.getNodeByID(newLeader));
+            stepsWithoutOK = 0;
+        }
+	}
+
+	@Override
+	public void neighborhoodChange() {
 	}
 
 	@Override
 	public void checkRequirements() throws WrongConfigurationException {
 	}
+
+    private void setLeader(int newLeader) {
+        log.logln("[" + ID + "] Setting a new leader: " + Integer.toString(newLeader));
+        this.leader = newLeader;
+    }
+
+    private int getLeader() {
+        return this.leader;
+    }
+
+    private void setCurrentRound(int newRound) {
+        this.currentRound = newRound;
+    }
+
+    private int getCurrentRound() {
+        return currentRound;
+    }
 }
