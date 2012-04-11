@@ -34,11 +34,10 @@ public class SimpleNode extends Node {
             SimpleMessage m = (SimpleMessage) msg;
             if (m.data.startsWith("START") && m.data.endsWith(Integer.toString(ID))) {
                 privlog("Hey, it seems i'm the leader now. Broadcasting OK");
-                SimpleMessage ok_msg = new SimpleMessage("OK," + Integer.toString(ID));
-                this.broadcast(ok_msg);
-                stepsWithoutOK = 0;
+                setLeader(ID);
+                broadcastOK();
 
-            } else if (m.data.startsWith("OK") && m.data.endsWith(Integer.toString(getLeader()))) {
+           } else if (m.data.startsWith("OK") && m.data.endsWith(Integer.toString(getLeader()))) {
                 privlog("Received OK from the leader");
                 stepsWithoutOK = 0;
             }
@@ -77,11 +76,8 @@ public class SimpleNode extends Node {
             int newLeader = currentRound % Tools.getNodeList().size() + 1;
             setLeader(newLeader);
             setCurrentRound(getCurrentRound() + 1);
-
-            SimpleMessage msg = new SimpleMessage("START," + Integer.toString(newLeader));
-            this.sendDirect(msg, Tools.getNodeByID(newLeader));
-            stepsWithoutOK = 0;
-        }
+            sendStartMessageToLeader();
+       }
 	}
 
 	@Override
@@ -98,6 +94,12 @@ public class SimpleNode extends Node {
 
     private void setLeader(int newLeader) {
         privlog("Setting a new leader: " + Integer.toString(newLeader));
+        if (newLeader == ID) {
+            this.setColor(Color.RED);
+        } else {
+            this.setColor(Color.BLACK);
+        }
+
         this.leader = newLeader;
     }
 
@@ -111,5 +113,17 @@ public class SimpleNode extends Node {
 
     private int getCurrentRound() {
         return currentRound;
+    }
+
+    private void broadcastOK() {
+        SimpleMessage ok_msg = new SimpleMessage("OK," + Integer.toString(ID));
+        this.broadcast(ok_msg);
+        stepsWithoutOK = 0;
+    }
+
+    private void sendStartMessageToLeader() {
+        SimpleMessage msg = new SimpleMessage("START," + Integer.toString(getLeader()));
+        this.sendDirect(msg, Tools.getNodeByID(getLeader()));
+        stepsWithoutOK = 0;
     }
 }
