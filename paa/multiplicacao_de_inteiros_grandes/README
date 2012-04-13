@@ -1,6 +1,0 @@
-Multiplicação de Inteiros Grandes
-
-Para rodar os testes:
-    - Modifique o path do GOROOT em export_goroot.sh
-    - digite: source export_goroot.sh
-    - digite: gotest
