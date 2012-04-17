@@ -7,14 +7,17 @@ START_TEST (test_quicksort_should_return_array_of_int_ordered)
 {
   int input[4] = {1, 2, 3, 4};
   int expected[4] = {1, 2, 3, 4};
-  int output[4];
+  int *output;
   int i;
 
-  memcpy((void *)output, (void *)quicksort(input), 4 * sizeof(int));
+  output = malloc(4 * sizeof(int));
+  memcpy((void *)output, (void *)quicksort(input, 4), 4 * sizeof(int));
 
   for (i=0; i < 4; i++) {
     fail_if(expected[i] != output[i], "Should have been sorted");
   }
+
+  free(output);
 }
 END_TEST
 
