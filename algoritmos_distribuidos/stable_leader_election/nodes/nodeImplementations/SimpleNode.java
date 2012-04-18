@@ -45,7 +45,13 @@ public class SimpleNode extends Node {
            } else if (m.data.startsWith("OK") && m.data.endsWith(Integer.toString(getLeader()))) {
                 privlog("Received OK from the leader");
                 stepsWithoutOK = 0;
-           }
+           } else if (m.data.startsWith("OK") && (getCurrentRound() < Integer.parseInt(m.data.split(",")[1]))) {
+                privlog("Recebi um OK com um round a frente, atualizando o round e leader");
+                setCurrentRound(Integer.parseInt(m.data.split(",")[1]));
+                setLeader(Integer.parseInt(m.data.split(",")[1]));
+                stepsWithoutOK = 0;
+            }
+
            inbox.freePackets();
 		}
 	}
