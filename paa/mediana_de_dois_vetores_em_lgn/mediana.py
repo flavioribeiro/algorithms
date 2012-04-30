@@ -5,10 +5,9 @@ import random
 
 def acha_mediana(vetor_1, pos_inicial, pos_final, vetor_2, n):
     pos_mediana = n
-#    print "- A posição da mediana: ", n
     print "-- Buscando entre as posicoes %d e %d do vetor" % (pos_inicial, pos_final-1)
 
-    pos_candidato = random.randrange(pos_inicial, pos_final)
+    pos_candidato = (pos_final + pos_inicial) / 2
     print "- A posicao do candidato: %d e o candidato: %d" % (pos_candidato, vetor_1[pos_candidato])
 
     menores_pos_candidato = pos_candidato - 1 #os de vetor1 que sao menores que candidato
