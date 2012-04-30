@@ -6,5 +6,5 @@ def test_mediana_de_dois_vetores_deve_retornar_mediana_em_lgn():
 
     n = len(vetor_1)
 
-    assert acha_mediana(vetor_1, 0, len(vetor_1), vetor_2, n) in [5, 8]
+    assert 8 == acha_mediana(vetor_1, 0, len(vetor_1), vetor_2, n)
 
