@@ -5,7 +5,7 @@ import random
 
 def acha_mediana(vetor_1, pos_inicial, pos_final, vetor_2, n):
     pos_mediana = n
-    print "- A posição da mediana: ", n
+#    print "- A posição da mediana: ", n
     print "-- Buscando entre as posicoes %d e %d do vetor" % (pos_inicial, pos_final-1)
 
     pos_candidato = random.randrange(pos_inicial, pos_final)
@@ -17,15 +17,17 @@ def acha_mediana(vetor_1, pos_inicial, pos_final, vetor_2, n):
     faltam = pos_mediana - len(vetor_1[:pos_candidato])
     print "- Faltam: ", faltam
 
-    for i in range(0, faltam):
-        if vetor_2[i] > vetor_1[pos_candidato]: #o candidato ta mt pequeno
-            print "- O candidato está muito pequeno ", vetor_2[i], vetor_1[pos_candidato]
-            return acha_mediana(vetor_1, pos_candidato, pos_final, vetor_2, n)
+    if vetor_2[faltam-1] > vetor_1[pos_candidato]:
+        print "- O candidato está muito pequeno ", vetor_2[faltam-1], vetor_1[pos_candidato]
+        return acha_mediana(vetor_1, pos_candidato+1, pos_final, vetor_2, n)
 
-    if vetor_2[i+1] > vetor_1[pos_candidato]:
-        print "Comparando ", vetor_2[i+1], vetor_1[pos_candidato]
+    if vetor_2[faltam] < vetor_1[pos_candidato]:
+        print "- O candidato está muito grande", vetor_2[faltam+1], vetor_1[pos_candidato]
+        return acha_mediana(vetor_1, pos_inicial, pos_candidato, vetor_2, n)
+
+    if vetor_2[faltam] > vetor_1[pos_candidato] and vetor_2[faltam-1] < vetor_1[pos_candidato]:
+        print "vetor_2[faltam+1]", vetor_2[faltam]
+        print "vetor_2[faltam]", vetor_2[faltam-1]
+
         print "Achado! ", vetor_1[pos_candidato]
         return vetor_1[pos_candidato]
-
-    else:
-        return acha_mediana(vetor_1, 0, pos_candidato+1, vetor_2, n)
