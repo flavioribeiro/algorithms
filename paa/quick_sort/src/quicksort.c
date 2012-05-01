@@ -42,13 +42,10 @@ int *quicksort(int *input, int length_of_input) {
 //  sorted_greater = quicksort(greater, len_of_greater);
 
   memcpy((void *)output, (void *)sorted_smaller, len_of_smaller * sizeof(int));
-  printf("Pia o output: "); for (i=0;i<length_of_input;i++) printf(" %d ", output[i]);printf("\n");
 
   memcpy((void *)(output + (len_of_smaller * sizeof(int))), (void *)pivot, 1 * sizeof(int));
-  printf("Pia o output: "); for (i=0;i<length_of_input;i++) printf(" %d ", output[i]);printf("\n");
 
   memcpy((void *)(output + (len_of_smaller + 1 * sizeof(int))), (void *)sorted_greater, len_of_greater * sizeof(int));
-  printf("Pia o output: "); for (i=0;i<length_of_input;i++) printf(" %d ", output[i]);printf("\n");
 
   return output;
 }
