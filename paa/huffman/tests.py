@@ -1,4 +1,4 @@
-from huffman import create_nodes, Node
+from huffman import create_nodes, Node, node_cmp
 
 #def test_huffman_create_tree_should_create_root_linked_to_two_nodes():
   #symbols = {10: 'a', 18: 'b'}
@@ -16,4 +16,9 @@ def test_huffman_create_nodes_should_create_objects_from_symbols():
   for node in nodes:
     assert isinstance(node, Node)
 
+def test_huffman_node_cmp_should_sort_nodes_according_to_weight():
+  symbols = {10: 'a', 18: 'b', 200: 'c', 1: 'd', 60: 'e'}
+  nodes = create_nodes(symbols)
+  nodes.sort(node_cmp)
 
+  assert ['c', 'e', 'b', 'a', 'd'] == [node.symbol for node in nodes]
