@@ -18,6 +18,8 @@ def create_tree(symbols):
       node_2 = nodes.pop()
       link_node = make_link_node(node_1, node_2)
       nodes.append(link_node)
+    else:
+      link_node = node_1
 
   return link_node
 
