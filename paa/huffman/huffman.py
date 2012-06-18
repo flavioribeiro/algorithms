@@ -10,7 +10,20 @@ class Node(object):
 
 def create_tree(symbols):
   nodes = create_nodes(symbols)
-  ordered_nodes = nodes.sort(node_cmp)
+  nodes.sort(node_cmp)
+
+  while nodes:
+    node_1 = nodes.pop()
+    if nodes:
+      node_2 = nodes.pop()
+      root = make_root(node_1, node_2)
+      nodes.append(root)
+
+  return root
+
+def make_root(node_1, node_2):
+  total_weight = node_1.weight + node_2.weight
+  return  Node(weight=total_weight, right_node=node_1, left_node=node_2)
 
 def create_nodes(symbols):
   return [Node(symbol[0], symbol[1]) for symbol in symbols.items()]
