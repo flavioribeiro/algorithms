@@ -31,3 +31,27 @@ def test_huffman_create_tree_with_just_one_node_should_return_itself():
   assert True == root_node.is_leaf()
   assert 10 == root_node.weight
   assert 'a' == root_node.symbol
+
+def test_huffman_should_create_a_big_tree():
+# The tree should be:
+#          (root)
+#         /      \
+#  (a+d+e+f)     (b+c)
+#   /     \      /   \
+# (a)  (d+e+f) (b)   (c)
+#      /    \
+#    (d)   (e+f)
+#          /   \
+#        (e)   (f)
+
+  symbols = {6: 'a', 5: 'b', 4: 'c', 3: 'd',  2: 'e', 1: 'f'}
+  root = create_tree(symbols)
+
+  assert sum(symbols.keys()) == root.weight
+  assert "c" == root.right_node.right_node.symbol
+  assert "b" == root.right_node.left_node.symbol
+  assert "a" == root.left_node.left_node.symbol
+  assert "d" == root.left_node.right_node.left_node.symbol
+  assert "e" == root.left_node.right_node.right_node.left_node.symbol
+  assert "f" == root.left_node.right_node.right_node.right_node.symbol
+
