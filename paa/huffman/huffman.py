@@ -16,12 +16,12 @@ def create_tree(symbols):
     node_1 = nodes.pop()
     if nodes:
       node_2 = nodes.pop()
-      root = make_root(node_1, node_2)
-      nodes.append(root)
+      link_node = make_link_node(node_1, node_2)
+      nodes.append(link_node)
 
-  return root
+  return link_node
 
-def make_root(node_1, node_2):
+def make_link_node(node_1, node_2):
   total_weight = node_1.weight + node_2.weight
   return  Node(weight=total_weight, right_node=node_1, left_node=node_2)
 
