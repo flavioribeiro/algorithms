@@ -57,6 +57,14 @@ def symbols_counter(phrase):
 
   return symbols
 
+def encode(phrase):
+  symbols = symbols_counter(phrase)
+  reprs = create_bits_reprs(symbols)
+  for symbol in phrase:
+    phrase = phrase.replace(symbol, reprs[symbol])
+
+  return phrase
+
 def make_link_node(node_1, node_2):
   total_weight = node_1.weight + node_2.weight
   return  Node(weight=total_weight, right_node=node_1, left_node=node_2)
