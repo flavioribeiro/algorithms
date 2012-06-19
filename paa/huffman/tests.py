@@ -1,4 +1,4 @@
-from huffman import create_nodes, Node, node_cmp, create_tree
+from huffman import create_nodes, Node, node_cmp, create_tree, create_bits_reprs
 
 def test_huffman_create_nodes_should_create_objects_from_symbols():
   symbols = {10: 'a', 18: 'b'}
@@ -54,4 +54,10 @@ def test_huffman_should_create_a_big_tree():
   assert "d" == root.left_node.right_node.left_node.symbol
   assert "e" == root.left_node.right_node.right_node.left_node.symbol
   assert "f" == root.left_node.right_node.right_node.right_node.symbol
+
+def test_huffman_create_bits_reprs_should_return_a_dict_with_symbols_and_reprs():
+  symbols = {10: "a", 20: "b"}
+  reprs = create_bits_reprs(symbols)
+
+  assert {"a": "00",  "b": "01"} == reprs
 

@@ -8,6 +8,9 @@ class Node(object):
   def is_leaf(self):
     return not self.right_node and not self.left_node
 
+  def set_repr(self, representation):
+    self.representation = representation
+
 def create_tree(symbols):
   nodes = create_nodes(symbols)
   nodes.sort(node_cmp)
@@ -23,6 +26,28 @@ def create_tree(symbols):
       link_node = node_1
 
   return link_node
+
+def create_bits_reprs(symbols):
+  root = create_tree(symbols)
+  set_representations("0", root)
+  representations = {}
+  get_representations(root, representations)
+
+  return representations
+
+def get_representations(node, representations):
+  if node.is_leaf():
+    representations[node.symbol] = node.representation
+  else:
+    get_representations(node.right_node, representations)
+    get_representations(node.left_node, representations)
+
+def set_representations(representation, node):
+  if node.is_leaf():
+    node.representation = representation
+  else:
+    set_representations(representation + "0", node.right_node)
+    set_representations(representation + "1", node.left_node)
 
 def make_link_node(node_1, node_2):
   total_weight = node_1.weight + node_2.weight
