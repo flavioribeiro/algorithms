@@ -1,4 +1,4 @@
-from huffman import create_nodes, Node, node_cmp, create_tree, create_bits_reprs, symbols_counter, encode
+from huffman import create_nodes, Node, node_cmp, create_tree, create_bits_reprs, symbols_counter, encode, decode
 
 def test_huffman_create_nodes_should_create_objects_from_symbols():
   symbols = {10: 'a', 18: 'b'}
@@ -73,9 +73,19 @@ def test_huffman_counter_should_build_dict_with_count_of_chars():
 
 def test_huffman_encoder_should_encode_phrase():
   phrase = "aab"
-  assert "001" == encode(phrase)
+  assert "001", {'a': '0', 'b': '1'} == encode(phrase)
 
   phrase = "aaabbbbbbccddddeeeee"
-  assert '100100100000000000000101101111111110101010101' == encode(phrase)
+  assert ('100100100000000000000101101111111110101010101',
+          {'a': '100', 'c': '101', 'b': '00', 'e': '01',
+          'd': '11'}) == encode(phrase)
+
+def test_huffman_decode_should_return_original_phrase():
+  encoded_phrase =  '100100100000000000000101101111111110101010101'
+  decoded_phrase = "aaabbbbbbccddddeeeee"
+
+  assert decoded_phrase == decode('100100100000000000000101101111111110101010101',
+          {'a': '100', 'c': '101', 'b': '00', 'e': '01',
+          'd': '11'})
 
 

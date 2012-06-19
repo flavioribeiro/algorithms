@@ -68,7 +68,20 @@ def encode(phrase):
     if symbol in encoded_phrase:
       encoded_phrase = encoded_phrase.replace(symbol, reprs[symbol])
 
-  return encoded_phrase
+  return encoded_phrase, reprs
+
+def decode(sequence, symbols):
+  decoded_phrase = ""
+  tmp_symbol = ""
+  symbols = dict((v,k) for k, v in symbols.iteritems())
+
+  for bit in sequence:
+    tmp_symbol += str(bit)
+    if tmp_symbol in symbols.keys():
+      decoded_phrase += symbols[tmp_symbol]
+      tmp_symbol = ""
+
+  return decoded_phrase
 
 def make_link_node(node_1, node_2):
   total_weight = node_1.weight + node_2.weight
