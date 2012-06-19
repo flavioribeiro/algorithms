@@ -50,7 +50,7 @@ def set_representations(representation, node):
     set_representations(representation + "0", node.left_node)
 
 def symbols_counter(phrase):
-#BUG if the weight of a symbol is the same, it is subscribed
+#BUG if the weight of a symbol is the same, it is overwritten
   symbols = {}
   for symbol in phrase:
     if symbol not in symbols.values():
