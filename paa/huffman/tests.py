@@ -1,4 +1,4 @@
-from huffman import create_nodes, Node, node_cmp, create_tree, create_bits_reprs
+from huffman import create_nodes, Node, node_cmp, create_tree, create_bits_reprs, symbols_counter
 
 def test_huffman_create_nodes_should_create_objects_from_symbols():
   symbols = {10: 'a', 18: 'b'}
@@ -66,3 +66,7 @@ def test_huffman_create_bits_reprs_should_return_a_dict_with_symbols_and_reprs()
   reprs = create_bits_reprs(symbols)
 
   assert {'a': '00', 'b': '10', 'c': '11', 'd': '010', 'e': '0110', 'f': '0111'} == reprs
+
+def test_huffman_counter_should_build_dict_with_count_of_chars():
+  phrase = "aaabbccccdd"
+  assert {3: 'a', 2: 'b', 4: 'c', 2: 'd'} == symbols_counter(phrase)

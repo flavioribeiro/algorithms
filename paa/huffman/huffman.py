@@ -49,6 +49,14 @@ def set_representations(representation, node):
     set_representations(representation + "1", node.right_node)
     set_representations(representation + "0", node.left_node)
 
+def symbols_counter(phrase):
+  symbols = {}
+  for symbol in phrase:
+    if symbol not in symbols.values():
+      symbols[ phrase.count(symbol) ] = symbol
+
+  return symbols
+
 def make_link_node(node_1, node_2):
   total_weight = node_1.weight + node_2.weight
   return  Node(weight=total_weight, right_node=node_1, left_node=node_2)
