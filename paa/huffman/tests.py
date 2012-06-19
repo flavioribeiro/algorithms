@@ -73,7 +73,9 @@ def test_huffman_counter_should_build_dict_with_count_of_chars():
 
 def test_huffman_encoder_should_encode_phrase():
   phrase = "aab"
-
   assert "001" == encode(phrase)
+
+  phrase = "aaabbbbbbccddddeeeee"
+  assert '100100100000000000000101101111111110101010101' == encode(phrase)
 
 

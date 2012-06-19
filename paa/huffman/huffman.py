@@ -50,6 +50,7 @@ def set_representations(representation, node):
     set_representations(representation + "0", node.left_node)
 
 def symbols_counter(phrase):
+#BUG if the weight of a symbol is the same, it is subscribed
   symbols = {}
   for symbol in phrase:
     if symbol not in symbols.values():
@@ -60,10 +61,14 @@ def symbols_counter(phrase):
 def encode(phrase):
   symbols = symbols_counter(phrase)
   reprs = create_bits_reprs(symbols)
-  for symbol in phrase:
-    phrase = phrase.replace(symbol, reprs[symbol])
 
-  return phrase
+  encoded_phrase = phrase
+
+  for symbol in phrase:
+    if symbol in encoded_phrase:
+      encoded_phrase = encoded_phrase.replace(symbol, reprs[symbol])
+
+  return encoded_phrase
 
 def make_link_node(node_1, node_2):
   total_weight = node_1.weight + node_2.weight
