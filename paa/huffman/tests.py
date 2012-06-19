@@ -56,8 +56,13 @@ def test_huffman_should_create_a_big_tree():
   assert "f" == root.left_node.right_node.right_node.right_node.symbol
 
 def test_huffman_create_bits_reprs_should_return_a_dict_with_symbols_and_reprs():
+  #Example from http://pt.wikipedia.org/wiki/Codifica%C3%A7%C3%A3o_de_Huffman
   symbols = {10: "a", 20: "b"}
   reprs = create_bits_reprs(symbols)
 
-  assert {"a": "00",  "b": "01"} == reprs
+  assert {"a": "1",  "b": "0"} == reprs
 
+  symbols = {6: 'a', 5: 'b', 4: 'c', 3: 'd',  2: 'e', 1: 'f'}
+  reprs = create_bits_reprs(symbols)
+
+  assert {'a': '00', 'b': '10', 'c': '11', 'd': '010', 'e': '0110', 'f': '0111'} == reprs

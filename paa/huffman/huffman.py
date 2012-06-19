@@ -29,7 +29,7 @@ def create_tree(symbols):
 
 def create_bits_reprs(symbols):
   root = create_tree(symbols)
-  set_representations("0", root)
+  set_representations("", root)
   representations = {}
   get_representations(root, representations)
 
@@ -46,8 +46,8 @@ def set_representations(representation, node):
   if node.is_leaf():
     node.representation = representation
   else:
-    set_representations(representation + "0", node.right_node)
-    set_representations(representation + "1", node.left_node)
+    set_representations(representation + "1", node.right_node)
+    set_representations(representation + "0", node.left_node)
 
 def make_link_node(node_1, node_2):
   total_weight = node_1.weight + node_2.weight
