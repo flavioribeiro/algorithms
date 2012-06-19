@@ -1,4 +1,5 @@
-from huffman import create_nodes, Node, node_cmp, create_tree, create_bits_reprs, symbols_counter, encode, decode
+from helpers import *
+from huffman import *
 
 def test_huffman_create_nodes_should_create_objects_from_symbols():
   symbols = {10: 'a', 18: 'b'}
