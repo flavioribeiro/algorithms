@@ -1,15 +1,8 @@
-"""
-Creating and plotting unstructured triangular grids.
-"""
 import matplotlib.pyplot as plt
 import matplotlib.tri as tri
 import numpy as np
 import math
 
-# Creating a Triangulation without specifying the triangles results in the
-# Delaunay triangulation of the points.
-
-# First create the x and y coordinates of the points.
 n_angles = 36
 n_radii = 8
 min_radius = 0.25
@@ -21,27 +14,11 @@ angles[:,1::2] += math.pi/n_angles
 
 x = (radii*np.cos(angles)).flatten()
 y = (radii*np.sin(angles)).flatten()
-
-# Create the Triangulation; no triangles so Delaunay triangulation created.
 triang = tri.Triangulation(x, y)
-
-# Mask off unwanted triangles.
 xmid = x[triang.triangles].mean(axis=1)
 ymid = y[triang.triangles].mean(axis=1)
 mask = np.where(xmid*xmid + ymid*ymid < min_radius*min_radius, 1, 0)
 triang.set_mask(mask)
-
-# Plot the triangulation.
-plt.figure()
-plt.gca().set_aspect('equal')
-plt.triplot(triang, 'bo-')
-plt.title('triplot of Delaunay triangulation')
-
-
-# You can specify your own triangulation rather than perform a Delaunay
-# triangulation of the points, where each triangle is given by the indices of
-# the three points that make up the triangle, ordered in either a clockwise or
-# anticlockwise manner.
 
 xy = np.asarray([
     [-0.101,0.872],[-0.080,0.883],[-0.069,0.888],[-0.054,0.890],[-0.045,0.897],
@@ -78,14 +55,9 @@ triangles = np.asarray([
     [32,31,33],[39,38,72],[33,72,38],[33,38,34],[37,35,38],[34,38,35],
     [35,37,36] ])
 
-# Rather than create a Triangulation object, can simply pass x, y and triangles
-# arrays to triplot directly.  It would be better to use a Triangulation object
-# if the same triangulation was to be used more than once to save duplicated
-# calculations.
 plt.figure()
 plt.gca().set_aspect('equal')
 plt.triplot(x, y, triangles, 'go-')
-plt.title('triplot of user-specified triangulation')
 plt.xlabel('Longitude (degrees)')
 plt.ylabel('Latitude (degrees)')
 
