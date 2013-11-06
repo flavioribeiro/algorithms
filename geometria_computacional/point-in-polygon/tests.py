@@ -27,6 +27,3 @@ def test_point_on_inside_should_be_inside_polygon():
     point = Point(25, 25)
     assert inside(triangle, point)
 
-
-
-
