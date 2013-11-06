@@ -6,12 +6,6 @@ class Point(object):
     def __eq__(self, other):
         return self.x == other.x and self.y == other.y
 
-def norm(point):
-    return math.sqrt((point.x*point.x) + (point.y*point.y))
-
-def scalar_product(point1, point2):
-    return (point1.x * point2.x) + (point1.y * point2.y)
-
 def index_rotation(pointx, pointy):
     p = Point(pointx, pointy)
 
@@ -20,3 +14,11 @@ def index_rotation(pointx, pointy):
                           (norm(points[-1] - p * norm(points[0] - p))))
 
     return total / 2 * math.pi
+
+def scalar_product(point1, point2):
+    return (point1.x * point2.x) + (point1.y * point2.y)
+
+def norm(point):
+    return math.sqrt((point.x*point.x) + (point.y*point.y))
+
+
