@@ -25,8 +25,10 @@ def in_circle(circle, point):
     column2 = pow(p2_point_x, 2) + pow(p2_point_y, 2)
     column3 = pow(p3_point_x, 2) + pow(p3_point_y, 2)
 
-    left = (p1_point_x * p2_point_y * column3) + (p2_point_x * p3_point_y * column1) + (p3_point_x * p1_point_y * column2)
-    right = (p1_point_x * p2_point_y * column2) + (p2_point_x * p3_point_y * column3) + (p3_point_x * p1_point_y * column1)
+    left = (p1_point_x * p2_point_y * column3) + (p2_point_x * p3_point_y * column1)
+            + (p3_point_x * p1_point_y * column2)
+    right = (p1_point_x * p2_point_y * column2) + (p2_point_x * p3_point_y * column3)
+            + (p3_point_x * p1_point_y * column1)
 
     return True if (left - right) > 0 else False
 
